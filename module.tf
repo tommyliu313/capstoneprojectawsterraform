@@ -30,7 +30,8 @@ module "alb" {
   # insert the 4 required variables here
   name = "my-alb"
   vpc_id = module.vpc.vpc_id
-  subnet = [var.public_subnet[0],var.public_subnet[1]]
+  subnet = [var.public_subnets[0],var.public_subnets[1]]
+  security_groups = aws_security_group.ALBSG
 }
 
 module "ec2-instance" {

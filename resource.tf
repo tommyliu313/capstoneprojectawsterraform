@@ -25,6 +25,14 @@ resource "aws_security_group" "Inventory-App"{
 description = "Enable access to App"
 }
 
+resource "aws_security_group" "ALBSG"{
+  name = "application load balancer"
+}
+
+#
+resource "aws_alb_target_group" "appgroup"{
+
+}
 # cloud9 environment
 resource "aws_cloud9_environment_ec2" "capstone_project" {
   instance_type = "t2.micro"
