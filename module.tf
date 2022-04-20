@@ -39,3 +39,28 @@ module "ec2-instance" {
   version = "3.5.0"
   # insert the 34 required variables here
 }
+
+module "asg"{
+  source  = "terraform-aws-modules/autoscaling/aws"
+  name = "auto scaling group"
+
+  desired_capacity = 2
+  min_size = 2
+  max_size = 4
+  health_check_type = ""
+  tags = {
+    name = "WebServer"
+  }
+}
+
+# ec2 auto scaling group
+module "ec2-autoscale-group" {
+  source  = "cloudposse/ec2-autoscale-group/aws"
+  version = "0.30.1"
+}
+
+module "ssm-parameter-store" {
+  source  = "cloudposse/ssm-parameter-store/aws"
+  version = "0.9.1"
+  # insert the 12 required variables here
+}

@@ -29,7 +29,7 @@ resource "aws_security_group" "ALBSG"{
   name = "application load balancer"
 }
 
-#
+# application load balancer
 resource "aws_alb_target_group" "appgroup"{
 
 }
@@ -50,7 +50,20 @@ resource "aws_instance" "Bastion" {
   ami = data.aws_ssm_parameter.ami.value
 }
 
+# launch template
+resource "aws_launch_template" "Example-LT"{
+  name = "Example-LT"
+}
+# database subnet group
 resource "aws_db_subnet_group" "exampledbsubnet"{
   description = "Example db subnet"
   vpc_id = module.vpc.vpc_id
+  subnet_ids  = []
+}
+# systems manager parameter store
+resource "aws_ssm_parameter" ""{
+  name= "/example/endpoint"
+  description = ""
+  type = "SecureString"
+  value = module.db.db_instance_endpoint
 }
