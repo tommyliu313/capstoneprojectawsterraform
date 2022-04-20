@@ -61,9 +61,27 @@ resource "aws_db_subnet_group" "exampledbsubnet"{
   subnet_ids  = []
 }
 # systems manager parameter store
-resource "aws_ssm_parameter" ""{
-  name= "/example/endpoint"
+resource "aws_ssm_parameter" "endpoint"{
+  name = "/example/endpoint"
   description = ""
   type = "SecureString"
   value = module.db.db_instance_endpoint
+}
+
+resource "aws_ssm_parameter" "username"{
+  name = "/example/username"
+  type = ""
+  value = "admin"
+}
+
+resource "aws_ssm_parameter" "password"{
+  name = "/example/password"
+  type = ""
+  value = "lab-password"
+}
+
+resource "aws_ssm_parameter" "database"{
+  name = "/example/database"
+  type = ""
+  value = "exampledb"
 }
