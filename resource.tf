@@ -37,3 +37,12 @@ resource "aws_launch_template" "Example-LT"{
 }
 
 #ec2
+
+resource "aws_instance" "Bastion" {
+  ami = data.aws_ssm_parameter.ami.value
+}
+
+resource "aws_db_subnet_group" "exampledbsubnet"{
+  description = "Example db subnet"
+  vpc_id = module.vpc.vpc_id
+}

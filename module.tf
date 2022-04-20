@@ -1,13 +1,21 @@
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.14.0"
-  # insert the 23 required variables here
+
+  #availability zones
+  azs = ["${var.region}a","${var.region}b"]
+  public_subnets = var.public_subnets
+  private_subnets = var.private_subnets
 }
 
-module "rds" {
+# database
+module "db" {
   source  = "terraform-aws-modules/rds/aws"
   version = "4.2.0"
-  # insert the 38 required variables here
+  engine = "mysql"
+  db_name = "example"
+  username = "admin"
+  port = "3306"
 }
 
 module "security-group" {
@@ -21,8 +29,8 @@ module "alb" {
   version = "6.9.0"
   # insert the 4 required variables here
   name = "my-alb"
-  vpc_id = ""
-  subnet =
+  vpc_id = module.vpc.vpc_id
+  subnet = [var.public_subnet[0],var.public_subnet[1]]
 }
 
 module "ec2-instance" {
