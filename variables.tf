@@ -18,9 +18,9 @@ variable "region" {
 }
 
 variable "access_key"{
- default = ""
+ description = "access key"
 }
 
 variable "secret_key"{
- default = ""
+ default = "secret key"
 }

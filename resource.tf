@@ -49,25 +49,61 @@ resource "aws_lb_target_group" "appgroup"{
 }
 # cloud9 environment
 resource "aws_cloud9_environment_ec2" "capstone_project" {
-  instance_type = "t2.micro"
+  instance_type = var.instance_type
   name          = "example-env"
+  provisioner "remote-exec"{
+  inline = [
+  "git clone https://github.com/baselm/capstoneproject.git",
+  "sudo unzip Example.zip -d /var/www/html/",
+  "sudo yum -y update",
+  "sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2",
+  "sudo yum install -y httpd mariadb-server",
+  "sudo systemctl start httpd",
+  "sudo systemctl enable httpd",
+  "sudo systemctl is-enabled httpd"
+  ]
+}
 }
 
 #ec2 launch template
 resource "aws_launch_template" "Example-LT"{
-
+  name = ""
 }
 
 #ec2
 
 resource "aws_instance" "Bastion" {
-  ami = data.aws_ssm_parameter.ami.value
-
+  ami = data.aws_ami.ami.id
+  instance_type = var.instance_type
+provisioner "remote-exec"{
+  inline = [
+  "git clone https://github.com/baselm/capstoneproject.git",
+  "sudo unzip Example.zip -d /var/www/html/",
+  "sudo yum -y update",
+  "sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2",
+  "sudo yum install -y httpd mariadb-server",
+  "sudo systemctl start httpd",
+  "sudo systemctl enable httpd",
+  "sudo systemctl is-enabled httpd"
+  ]
+}
 }
 
 # launch template
 resource "aws_launch_template" "Example-LT"{
   name = "Example-LT"
+}
+
+resource "aws_autoscaling_group" "appautoscale" {
+  name = "appautoscale"
+  max_size = 4
+  min_size = 2
+  desired_capacity = 2
+  launch_configuration = ""
+  vpc_zone_identifier = module.vpc
+  tags ={
+    Name = "Web Server"
+  }
 }
 # database subnet group
 resource "aws_db_subnet_group" "exampledbsubnet"{
