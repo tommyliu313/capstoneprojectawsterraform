@@ -28,7 +28,15 @@ description = "Enable access to App"
 resource "aws_security_group" "ALBSG"{
   name = "application load balancer"
 }
-
+# security group rules
+resource "aws_security_group_rule" "ssh_to_"{
+  from_port         = 22
+  protocol          = "tcp"
+  security_group_id = ""
+  to_port           = 0
+  type              = ""
+  source_security_group_id = ""
+}
 # application load balancer
 resource "aws_lb" "appgroup" {
   name = "appgroup"
@@ -40,12 +48,11 @@ resource "aws_lb_listener" "appgroup"{
   load_balancer_arn = aws_lb.appgroup.arn
   default_action {}
 }
-
 resource "aws_lb_target_group" "appgroup"{
  name = ""
  port = 80
  protocol = "HTTP"
- vpc_id = module.vpc.
+ vpc_id = module.vpc.id
 }
 # cloud9 environment
 resource "aws_cloud9_environment_ec2" "capstone_project" {
